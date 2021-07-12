@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <title>Document</title>
+</head>
+<body>
+    <div align=center margin=20px>
+             <h1 class="text-primary fs-1 fw-bold pt-5" ><b >Schedule An Appointment</b></h1>
+    </div>
+
+
+     <br>
+     <br>
+    <div class=" col container-fluid"  >
+
+{{data}}
+            <!-- <div class="row  " >
+
+                      &nbsp;
+                      &nbsp;
+                      &nbsp;
+                    <div class="card " style="width: 18rem;">
+
+                     <div class="card-body">
+
+                        <h5 class="card-title"><b>Dr.Ravi Kumar</b></h5>
+                        <p class="card-text">Department of Neurology</p>
+                        <a href="#" class="btn btn-primary">Book An Appointment</a>
+
+
+
+                     </div>
+
+                    </div>
+
+
+
+                     &nbsp;
+                     &nbsp;
+                     &nbsp;
+                     &nbsp;
+                     &nbsp;
+                     &nbsp;
+                     &nbsp;
+
+                    <div class="card " style="width: 18rem;">
+
+                        <div class="card-body">
+
+                           <h5 class="card-title"><b>Dr.Suresh Kumar</b></h5>
+                           <p class="card-text">Department of Cardiology</p>
+                           <a href="#" class="btn btn-primary">Book An Appointment</a>
+
+
+
+                        </div>
+
+                    </div>
+
+                       &nbsp;
+                       &nbsp;
+                       &nbsp;
+                       &nbsp;
+                       &nbsp;
+                       &nbsp;
+                       &nbsp;
+
+                     <div class="card " style="width: 18rem;">
+
+                          <div class="card-body">
+
+                             <h5 class="card-title"><b>Dr.Hari Krishna</b></h5>
+                             <p class="card-text">Department of Dental</p>
+                             <a href="#" class="btn btn-primary">Book An Appointment</a>
+
+
+
+                          </div>
+
+                         </div>
+
+                         &nbsp;
+                       &nbsp;
+                       &nbsp;
+                       &nbsp;
+                       &nbsp;
+                       &nbsp;
+                       &nbsp;
+
+                     <div class="card " style="width: 18rem;">
+
+                          <div class="card-body">
+
+                             <h5 class="card-title"><b>Dr.Rama Krishna</b></h5>
+                             <p class="card-text">Children Specialist</p>
+                             <a href="#" class="btn btn-primary">Book An Appointment</a>
+
+
+
+                          </div>
+
+                         </div>
+
+
+
+
+
+        </div> -->
+
+        {% for i in data  %}
+        <div class="card " style="width: 18rem;">
+
+             <div class="card-body">
+
+                <h5 class="card-title"><b>{{i['name']}}</b></h5>
+                <p class="card-text">{{i['department']}}</p>
+                <button type="button" name="button" onclick="change_visibility({{i['_id']}},'{{i['name']}}')">Book An Appointment</button>
+                <!-- <button href="#" class="btn btn-primary">Book An Appointment</a> -->
+
+             </div>
+
+            </div>
+        {%endfor%}
+        <div id = 'input' style="visibility:hidden">
+
+          <form id="inp" class="" action="/appointment" method="post">
+            <input type="text" name="name1" value="" placeholder="Name"/>
+            <input type="number" name="age" placeholder="Age">
+            <input type="text" id="dep" name="dep" readonly/>
+            <input list="time" name = 'time'>
+            <datalist id = "time"></datalist>
+            <input type="submit" value = "Submit">
+          </form>
+
+        </div>
+
+    </div>
+
+<script>
+ var a = {};
+ 
+ {% for i in data %}
+ var a1 = [];
+ {%for j in i['time']%}
+  a1.push("{{i['time'][j]}}");
+  {%endfor%}
+  // console.log(a1);
+   a[{{i['_id']}}] = a1;
+ {% endfor %}
+ function change_visibility(id,n){
+   var v = document.getElementById("input");
+   v.style.visibility = "visible";
+   v = document.getElementById("inp");
+   doc = document.getElementById('dep');
+   doc.value = n;
+   var l = document.createElement("datalist");
+      var options = '';
+    for (var i = 0; i < a[id].length; i++) {
+      options += '<option value="' + a[id][i] + '" />';
+    } 
+
+    document.getElementById('time').innerHTML = options;
+    for(var i =0;i<a[id].length;i++){
+      var k = document.createElement("option");
+      k.value = a[id][i];
+      console.log(k);
+      l.innerHTML = l.innerHTML + k;
+    }
+  //  v.insertAdjacentHTML('beforeend',l.innerHTML)
+ }
+
+</script>
+
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+</body>
+</html>
